@@ -423,6 +423,11 @@ async function reviewPR(octokit, owner, repo, prNumber) {
     return;
   }
 
+  if (prInfo.data.changed_files > 500) {
+    console.log(`Skipping PR #${prNumber} as it has more than 500 file changes (${prInfo.data.changed_files}).`);
+    return;
+  }
+
   // Fetch modified modules
   const modifiedModuleVersions = await fetchAllModifiedModuleVersions(octokit, owner, repo, prNumber);
   if (modifiedModuleVersions === null) {
